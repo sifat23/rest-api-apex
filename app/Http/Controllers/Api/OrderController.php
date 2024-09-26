@@ -4,13 +4,10 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Order\PlaceRequest;
-use App\Http\Resources\OrderResource;
 use App\Models\Order;
 use App\Models\Product;
 use App\Repositories\OrderRepository;
-use http\Env\Response;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
@@ -33,7 +30,15 @@ class OrderController extends Controller
         $quantities = $request->quantities;
 
         //check products stock before ordering
-        $this->repository->checkStockItem($products, $quantities);
+        [$product, $quantity] = $this->repository->checkStockItem($products, $quantities);
+
+        if (!empty($product) && !empty($quantity)) {
+            return $this->sendErrorJson([
+                'message' => 'Out of stock',
+                'product_name' => $product->name,
+                'current_stock' => $product->stock
+            ], 400);
+        }
 
         //calculate total amount or this order
         $totalAmount = $this->repository->calculateTotalCost($products, $quantities);
