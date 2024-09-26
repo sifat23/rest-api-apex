@@ -19,4 +19,16 @@ class BaseRequest extends FormRequest
             )
         );
     }
+
+    public function failedAuthorization()
+    {
+        throw new HttpResponseException(
+            response()->json(
+                [
+                    'message' => 'This action is unauthorized.'
+                ],
+                401
+            )
+        );
+    }
 }
