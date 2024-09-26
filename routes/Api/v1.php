@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\Auth\AuthController;
+use App\Http\Controllers\Api\OrderController;
 use App\Http\Controllers\Api\ProductController;
 use Illuminate\Support\Facades\Route;
 
@@ -29,6 +30,13 @@ Route::group(['middleware' => 'api'], function () {
         Route::post('/product/store', [ProductController::class, 'store']);
         Route::post('/product/update/{product}', [ProductController::class, 'update']);
     });
+
+    /**
+     * orders
+     * order items
+     */
+    Route::post('/order/place', [OrderController::class, 'orderPlace']);
+    Route::get('/order/history', [OrderController::class, 'orderHistory']);
 });
 
 
