@@ -11,11 +11,20 @@ use App\Repositories\ProductRepository;
 class ProductController extends Controller
 {
     private ProductRepository $repository;
+
     public function __construct(ProductRepository $repository)
     {
         $this->repository = $repository;
 
     }
+
+    public function allProducts()
+    {
+        return $this->sendSuccessJson([
+            'products' => $this->repository->getAllProducts()
+        ]);
+    }
+
     public function store(StoreRequest $request)
     {
         $product = $this->repository->storeProduct($request);

@@ -8,6 +8,9 @@ use Illuminate\Support\Facades\Route;
 /**
  * api middleware
  */
+
+Route::get('/all-products', [ProductController::class, 'allProducts']);
+
 Route::group(['middleware' => 'api'], function () {
 
     /**
