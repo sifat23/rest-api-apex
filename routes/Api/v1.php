@@ -6,24 +6,24 @@ use App\Http\Controllers\Api\ProductController;
 use Illuminate\Support\Facades\Route;
 
 /**
- * api middleware
+ * api public routes
  */
 
 Route::get('/all-products', [ProductController::class, 'allProducts']);
 
-Route::group(['middleware' => 'api'], function () {
+/**
+ * authentication
+ * auth prefix
+ */
+Route::group(['prefix' => 'auth'], function () {
+    Route::post('/login', [AuthController::class, 'login']);
+    Route::post('/register', [AuthController::class, 'register']);
+    Route::get('/profile', [AuthController::class, 'profile']);
+    Route::post('/logout', [AuthController::class, 'logout']);
+    Route::post('/refresh', [AuthController::class, 'refresh']);
+});
 
-    /**
-     * authentication
-     * auth prefix
-     */
-    Route::group(['prefix' => 'auth'], function () {
-        Route::post('/login', [AuthController::class, 'login']);
-        Route::post('/register', [AuthController::class, 'register']);
-        Route::get('/profile', [AuthController::class, 'profile']);
-        Route::post('/logout', [AuthController::class, 'logout']);
-        Route::post('/refresh', [AuthController::class, 'refresh']);
-    });
+Route::group(['middleware' => 'auth:api'], function () {
 
     /**
      * product
