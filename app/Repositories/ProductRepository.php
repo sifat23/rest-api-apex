@@ -7,12 +7,18 @@ use App\Http\Requests\Product\UpdateRequest;
 use App\Interfaces\ProductRepositoryInterface;
 use App\Models\Product;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Config;
 
 class ProductRepository implements ProductRepositoryInterface
 {
     public function getAllProducts(): Collection
     {
-        return Product::all();
+        $minutes = Config::get('app.cache_minutes');
+
+        return Cache::remember('all_products', now()->addMinutes($minutes), function () {
+            return Product::all();
+        });
     }
     public function storeProduct(StoreRequest $request): Product
     {

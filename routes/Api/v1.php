@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\Auth\AuthController;
 use App\Http\Controllers\Api\OrderController;
 use App\Http\Controllers\Api\ProductController;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Route;
 
 /**
@@ -10,6 +11,7 @@ use Illuminate\Support\Facades\Route;
  */
 
 Route::get('/all-products', [ProductController::class, 'allProducts']);
+Route::post('/clear-cache', [Controller::class, 'clearCache']);
 
 /**
  * authentication

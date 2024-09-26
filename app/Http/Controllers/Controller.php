@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Validation\ValidatesRequests;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller as BaseController;
+use Illuminate\Support\Facades\Cache;
 
 class Controller extends BaseController
 {
@@ -30,5 +32,16 @@ class Controller extends BaseController
         ];
 
         return response()->json($response, $statusCode);
+    }
+
+    public function clearCache(): JsonResponse
+    {
+        Cache::forget('all_products');
+
+        $result = [
+            'message' => 'All cache in omitted'
+        ];
+
+        return $this->sendSuccessJson($result);
     }
 }
